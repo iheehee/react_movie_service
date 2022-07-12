@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
+
   <body>
     <div id="root"></div>
   </body>
@@ -20,15 +21,50 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
     const root = document.getElementById("root");
-    function App() {
-      let [counter, setCounter] = React.useState();
-      const onClick = () => {
-        setCounter(counter + 1);
+    function MinutesToHours() {
+      const [amount, setAmount] = React.useState(0);
+      const [invert, setInverted] = React.useState(false);
+      const onChange = (event) => {
+        setAmount(event.target.value);
+      };
+      const reset = () => setAmount(0);
+      const onInvert = () => {
+        reset();
+        setInverted(current => !current);
       };
       return (
         <div>
-          <h3>Total clicks: {counter}</h3>
-          <button onClick={onClick}} >Click me</button>;
+          <div>
+            <label htmlFor="minutes">Minutes</label>
+            <input
+              value={invert ? amount * 60 : amount}
+              id="minutes"
+              placeholder="Minutes"
+              type="number"
+              onChange={onChange}
+              disabled={invert}
+            />
+          </div>
+          <div>
+            <label htmlFor="hours">Hours</label>
+            <input
+              value={invert ? amount : Math.round(amount / 60)}
+              id="hours"
+              placeholder="Hours"
+              type="number"
+              disabled={!invert}
+            />
+          </div>
+          <button onClick={reset}>reset</button>
+          <button onClick={onInvert}>{invert ? "Turn back" : "Invert"}</button>
+        </div>
+      );
+    }
+    function App() {
+      return (
+        <div>
+          <h3>Super Converter</h3>
+          <MinutesToHours />
         </div>
       );
     }
